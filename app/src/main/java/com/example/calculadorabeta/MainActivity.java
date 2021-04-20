@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button botaoOperacaoLimpar;
 
     private Double calculo = 0.0;
-    private String numero = "";
+    private String numeroDigitado = "";
+    private String operacao="";
 
     
 
@@ -96,78 +97,101 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (view.getId()){
 
                     case R.id.button1:
-                        visor.setText(numero =  numero.concat("1"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("1"));
 
                         break;
 
                     case R.id.button2:
-                        visor.setText(numero =  numero.concat("2"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("2"));
 
                         break;
 
                     case R.id.button3:
-                        visor.setText(numero =  numero.concat("3"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("3"));
 
                         break;
 
                     case R.id.button4:
-                        visor.setText(numero =  numero.concat("4"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("4"));
 
                         break;
 
                     case R.id.button5:
-                        visor.setText(numero =  numero.concat("5"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("5"));
 
                         break;
 
                     case R.id.button6:
-                        visor.setText(numero =  numero.concat("6"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("6"));
 
                         break;
 
                     case R.id.button7:
-                        visor.setText(numero =  numero.concat("7"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("7"));
 
                         break;
 
                     case R.id.button8:
-                        visor.setText(numero =  numero.concat("8"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("8"));
 
                         break;
 
                     case R.id.button9:
-                        visor.setText(numero =  numero.concat("9"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("9"));
 
                         break;
 
                     case R.id.button0:
-                        visor.setText(numero =  numero.concat("0"));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("0"));
 
                         break;
 
                     case R.id.buttonPonto:
-                        visor.setText(numero =  numero.concat("."));
+                        visor.setText(numeroDigitado =  numeroDigitado.concat("."));
 
                         break;
 
                     case R.id.buttonC:
                          visor.setText( "" );
-                         numero = "";
+                         numeroDigitado = "";
                         calculo = 0.0;
 
                          break;
 
                     case R.id.buttonMais:
                          funcaoSoma();
-                         numero = "";
+                         numeroDigitado = "";
+                         operacao = "+";
 
                         break;
 
                     case R.id.buttonMenos:
                         funcaoSubtracao();
-                        numero = "";
+                        numeroDigitado = "";
+                        operacao = "-";
 
                         break;
+
+                    case R.id.buttonX:
+                        funcaoMultiplicao();
+                        numeroDigitado = "";
+                        operacao = "*";
+
+                        break;
+
+                    case R.id.buttonDivisao:
+                        funcaoDivisao();
+                        numeroDigitado = "";
+                        operacao = "/";
+
+                        break;
+
+                    case R.id.buttonIgual:
+                        funcaoIgual();
+                        numeroDigitado = "";
+
+                        break;
+
                 }
 
     }
@@ -176,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void funcaoSoma(){
         Double digitos = 0.0;
         Double valor = calculo;
-        digitos = digitos.parseDouble(numero);
+        digitos = digitos.parseDouble(numeroDigitado);
         calculo = valor + digitos;
 
         visor.setText(calculo.toString());
@@ -186,16 +210,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Double digitos = 0.0;
         Double valor = calculo;
-        digitos = digitos.parseDouble(numero);
+        digitos = digitos.parseDouble(numeroDigitado);
 
-        calculo = calculo.parseDouble(numero);
-        visor.setText(numero);
+        calculo = calculo.parseDouble(numeroDigitado);
+        visor.setText(numeroDigitado);
 
 
         calculo = digitos - valor;
 
         visor.setText(calculo.toString());
 
+    }
+
+    public void funcaoMultiplicao(){
+
+        Double digitos = 1.0;
+        Double valor = calculo;
+        digitos = digitos.parseDouble(numeroDigitado);
+
+        if(calculo != 0.0){
+            calculo = calculo.parseDouble(numeroDigitado);
+            visor.setText(numeroDigitado);
+
+            calculo = digitos * valor;
+
+            visor.setText(calculo.toString());
+        }else {
+            calculo = calculo.parseDouble(numeroDigitado);
+            visor.setText(numeroDigitado);
+        }
+
+    }
+
+    public void funcaoDivisao(){
+
+        Double digitos = 0.0;
+        Double valor = calculo;
+        digitos = digitos.parseDouble(numeroDigitado);
+
+        if(calculo != 0.0){
+            calculo = calculo.parseDouble(numeroDigitado);
+            visor.setText(numeroDigitado);
+
+            calculo = valor / digitos;
+
+            visor.setText(calculo.toString());
+        }else {
+            calculo = calculo.parseDouble(numeroDigitado);
+            visor.setText(numeroDigitado);
+        }
+
+    }
+
+    public void funcaoIgual(){
+        if(operacao.equals("+")) {
+            funcaoSoma();
+        } else if(operacao.equals("-")){
+            funcaoSubtracao();
+        }else if(operacao.equals("*")){
+            funcaoMultiplicao();
+        }else{
+            funcaoDivisao();
+        }
+
+
+        visor.setText(calculo.toString());
     }
 
 

@@ -161,6 +161,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                          funcaoSoma();
                          numero = "";
 
+                        break;
+
+                    case R.id.buttonMenos:
+                        funcaoSubtracao();
+                        numero = "";
 
                         break;
                 }
@@ -170,11 +175,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void funcaoSoma(){
         Double digitos = 0.0;
-        Double soma = calculo;
+        Double valor = calculo;
         digitos = digitos.parseDouble(numero);
-        calculo = soma + digitos;
+        calculo = valor + digitos;
 
         visor.setText(calculo.toString());
+    }
+
+    public void funcaoSubtracao(){
+
+        Double digitos = 0.0;
+        Double valor = calculo;
+        digitos = digitos.parseDouble(numero);
+
+        calculo = calculo.parseDouble(numero);
+        visor.setText(numero);
+
+
+        calculo = digitos - valor;
+
+        visor.setText(calculo.toString());
+
     }
 
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -187,8 +188,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
 
                     case R.id.buttonIgual:
-                        funcaoIgual();
+                        funcaoIgual(operacao);
                         numeroDigitado = "";
+
 
                         break;
 
@@ -198,25 +200,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void funcaoSoma(){
-        Double digitos = 0.0;
-        Double valor = calculo;
-        digitos = digitos.parseDouble(numeroDigitado);
-        calculo = valor + digitos;
+        try {
+            Double digitos = 0.0;
+            Double valor = calculo;
+            digitos = digitos.parseDouble(numeroDigitado);
+            calculo = valor + digitos;
 
-        visor.setText(calculo.toString());
+            visor.setText(calculo.toString());
+
+        } catch (Exception e){
+            funcaoSoma();
+        }
+
     }
 
     public void funcaoSubtracao(){
 
-        Double digitos = 0.0;
-        Double valor = calculo;
-        digitos = digitos.parseDouble(numeroDigitado);
+        Double digitos = calculo;
+        Double valor = 0.0;
 
-        calculo = calculo.parseDouble(numeroDigitado);
-        visor.setText(numeroDigitado);
+        if(calculo == 0.0){
 
+            digitos = digitos.parseDouble(numeroDigitado);
 
-        calculo = digitos - valor;
+            calculo = digitos;
+            visor.setText(numeroDigitado);
+        } else{
+            valor = valor.parseDouble(numeroDigitado);
+        }
+
+        calculo = digitos - valor ;
 
         visor.setText(calculo.toString());
 
@@ -262,19 +275,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void funcaoIgual(){
-        if(operacao.equals("+")) {
-            funcaoSoma();
-        } else if(operacao.equals("-")){
-            funcaoSubtracao();
-        }else if(operacao.equals("*")){
-            funcaoMultiplicao();
-        }else{
-            funcaoDivisao();
+    public void funcaoIgual(String funcaoAnterior) {
+
+
+        switch (operacao){
+            case "+":
+
+                try {
+                    funcaoSoma();
+                    operacao = "+";
+                    break;
+                } catch (ArithmeticException arithmeticException){
+
+                    Toast.makeText(this, "Erro aritimetico", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e){
+                    Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show();
+                }
+
+
         }
 
 
-        visor.setText(calculo.toString());
+        /*if (funcaoAnterior.equals("+")) {
+            funcaoSoma();
+            calculo = 0.0;
+
+        } else if (funcaoAnterior.equals("-")) {
+            funcaoSubtracao();
+
+
+        } else if (funcaoAnterior.equals("*")) {
+            funcaoMultiplicao();
+
+        } else {
+            funcaoDivisao();
+        }*/
+
+
     }
 
 

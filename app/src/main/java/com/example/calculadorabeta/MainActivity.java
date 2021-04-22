@@ -3,6 +3,7 @@ package com.example.calculadorabeta;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Double calculo = 0.0;
     private String numeroDigitado = "";
     private String operacao="";
+    private String memoria = "";
 
     
 
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.buttonC:
                          visor.setText( "" );
                          numeroDigitado = "";
-                        calculo = 0.0;
+                         calculo = 0.0;
 
                          break;
 
@@ -191,8 +193,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         funcaoIgual(operacao);
                         numeroDigitado = "";
 
-
                         break;
+
+                    case R.id.buttonM:
+                        memoria();
 
                 }
 
@@ -208,8 +212,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             visor.setText(calculo.toString());
 
-        } catch (Exception e){
-            funcaoSoma();
+        }catch (ArithmeticException arithmeticException){
+            arithmeticException.printStackTrace();
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
         }
 
     }
@@ -219,21 +228,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Double digitos = calculo;
         Double valor = 0.0;
 
-        if(calculo == 0.0){
+        try {
+            if(calculo == 0.0){
 
-            digitos = digitos.parseDouble(numeroDigitado);
+                digitos = digitos.parseDouble(numeroDigitado);
 
-            calculo = digitos;
-            visor.setText(numeroDigitado);
-        } else{
-            valor = valor.parseDouble(numeroDigitado);
+                calculo = digitos;
+                visor.setText(numeroDigitado);
+            } else{
+                valor = valor.parseDouble(numeroDigitado);
+            }
+
+            calculo = digitos - valor ;
+
+            visor.setText(calculo.toString());
+
+        } catch (ArithmeticException arithmeticException){
+            arithmeticException.printStackTrace();
+
+
+        } catch (Exception e){
+            e.printStackTrace();
         }
 
-        calculo = digitos - valor ;
+     }
 
-        visor.setText(calculo.toString());
 
-    }
+
 
     public void funcaoMultiplicao(){
 
@@ -241,19 +262,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Double valor = calculo;
         digitos = digitos.parseDouble(numeroDigitado);
 
-        if(calculo != 0.0){
-            calculo = calculo.parseDouble(numeroDigitado);
-            visor.setText(numeroDigitado);
+        try {
+            if(calculo != 0.0){
+                calculo = calculo.parseDouble(numeroDigitado);
+                visor.setText(numeroDigitado);
 
-            calculo = digitos * valor;
+                calculo = digitos * valor;
 
-            visor.setText(calculo.toString());
-        }else {
-            calculo = calculo.parseDouble(numeroDigitado);
-            visor.setText(numeroDigitado);
-        }
+                visor.setText(calculo.toString());
+            }else {
+                calculo = calculo.parseDouble(numeroDigitado);
+                visor.setText(numeroDigitado);
+            }
 
-    }
+        }     catch (ArithmeticException arithmeticException){
+            arithmeticException.printStackTrace();
+
+            }
+        catch (Exception e){
+                e.printStackTrace();
+
+            }
+
+     }
 
     public void funcaoDivisao(){
 
@@ -261,59 +292,72 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Double valor = calculo;
         digitos = digitos.parseDouble(numeroDigitado);
 
-        if(calculo != 0.0){
-            calculo = calculo.parseDouble(numeroDigitado);
-            visor.setText(numeroDigitado);
+        try {
 
-            calculo = valor / digitos;
+            if(calculo != 0.0){
+                calculo = calculo.parseDouble(numeroDigitado);
+                visor.setText(numeroDigitado);
 
-            visor.setText(calculo.toString());
-        }else {
-            calculo = calculo.parseDouble(numeroDigitado);
-            visor.setText(numeroDigitado);
+                calculo = valor / digitos;
+
+                visor.setText(calculo.toString());
+            }else {
+                calculo = calculo.parseDouble(numeroDigitado);
+                visor.setText(numeroDigitado);
+            }
+
+        } catch (ArithmeticException arithmeticException){
+            arithmeticException.printStackTrace();
+
+        } catch (Exception e){
+
+            e.printStackTrace();
         }
 
-    }
 
+
+    }
+     // verificar como a funcao esta mandando o digito para o visor e verificar como as variaveis estao sendo atualizadas apos isso.
+    //  possivel falha quando atualiza a ultima variavel
     public void funcaoIgual(String funcaoAnterior) {
 
 
         switch (operacao){
             case "+":
+                funcaoSoma();
+                operacao = "";
+                break;
+            case "-" :
+                funcaoSubtracao();
+                operacao = "-";
+                break;
 
-                try {
-                    funcaoSoma();
-                    operacao = "+";
-                    break;
-                } catch (ArithmeticException arithmeticException){
+            case "*":
+                funcaoMultiplicao();
+                operacao = "*";
+                break;
 
-                    Toast.makeText(this, "Erro aritimetico", Toast.LENGTH_SHORT).show();
+            case "/":
+                operacao = "/";
+                break;
 
-                } catch (Exception e){
-                    Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show();
-                }
+        }
+
+
+    }
+
+    public void memoria(){
+
+        if (memoria.equals("") ){
+            memoria = visor.getText().toString();
+        } else{
+            visor.setText(memoria);
+            calculo = Double.valueOf(memoria);
 
 
         }
 
 
-        /*if (funcaoAnterior.equals("+")) {
-            funcaoSoma();
-            calculo = 0.0;
-
-        } else if (funcaoAnterior.equals("-")) {
-            funcaoSubtracao();
-
-
-        } else if (funcaoAnterior.equals("*")) {
-            funcaoMultiplicao();
-
-        } else {
-            funcaoDivisao();
-        }*/
-
-
     }
-
 
 }

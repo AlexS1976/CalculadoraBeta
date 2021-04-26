@@ -62,7 +62,7 @@
         app:backgroundTint="#FFC107"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button9"
-        app:layout_constraintTop_toBottomOf="@+id/buttonM" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonPorcentagem" />
 
     <Button
         android:id="@+id/button0"
@@ -223,7 +223,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonPonto" />
 
     <Button
-        android:id="@+id/buttonM"
+        android:id="@+id/buttonPorcentagem"
         android:layout_width="60dp"
         android:layout_height="55dp"
         android:layout_marginStart="24dp"
@@ -232,10 +232,10 @@
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
         android:background="#717070"
-        android:text="m"
+        android:text="%"
         android:textColor="#151515"
         android:textSize="30sp"
-        app:backgroundTint="#68AC64"
+        app:backgroundTint="#FFC107"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button6"
         app:layout_constraintTop_toBottomOf="@+id/buttonC" />

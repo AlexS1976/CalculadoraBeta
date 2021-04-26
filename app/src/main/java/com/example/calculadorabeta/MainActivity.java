@@ -3,11 +3,9 @@ package com.example.calculadorabeta;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,13 +28,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button botaoOperacaoMultiplicacao;
 
     private Button botaoOperacaoIgual;
-    private Button botaoOperacaoMemoria;
+    private Button botaoOperacaoPorcentagem;
     private Button botaoOperacaoLimpar;
 
-    private Double calculo = 0.0;
+    private Double primeiroNumero = 0.0;
     private String numeroDigitado = "";
     private String operacao="";
     private String memoria = "";
+    private Double segundoNumero = 0.0;
+    private Double memoriacalculo = 0.0;
 
     
 
@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         botaoOperacaoIgual = findViewById(R.id.buttonIgual);
         botaoOperacaoIgual.setOnClickListener(this);
-        botaoOperacaoMemoria = findViewById(R.id.buttonM);
-        botaoOperacaoMemoria.setOnClickListener(this);
+        botaoOperacaoPorcentagem = findViewById(R.id.buttonPorcentagem);
+        botaoOperacaoPorcentagem.setOnClickListener(this);
         botaoOperacaoLimpar = findViewById(R.id.buttonC);
         botaoOperacaoLimpar.setOnClickListener(this);
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.buttonC:
                          visor.setText( "" );
                          numeroDigitado = "";
-                         calculo = 0.0;
+                         primeiroNumero = 0.0;
 
                          break;
 
@@ -195,22 +195,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         break;
 
-                    case R.id.buttonM:
-                        memoria();
+                    case R.id.buttonPorcentagem:
+                       // porcentagem();
+
 
                 }
 
     }
 
-
+ //
     public void funcaoSoma(){
         try {
-            Double digitos = 0.0;
-            Double valor = calculo;
-            digitos = digitos.parseDouble(numeroDigitado);
-            calculo = valor + digitos;
+            Double total = 0.0;
+            if(primeiroNumero == 0.0){
+                primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
+                numeroDigitado = "";
+                visor.setText(primeiroNumero.toString());
+            }
 
-            visor.setText(calculo.toString());
+            segundoNumero = segundoNumero.parseDouble(numeroDigitado);
+            total = primeiroNumero + segundoNumero;
+            primeiroNumero = total;
+            visor.setText(total.toString());
 
         }catch (ArithmeticException arithmeticException){
             arithmeticException.printStackTrace();
@@ -225,32 +231,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void funcaoSubtracao(){
 
-        Double digitos = calculo;
-        Double valor = 0.0;
-
         try {
-            if(calculo == 0.0){
-
-                digitos = digitos.parseDouble(numeroDigitado);
-
-                calculo = digitos;
-                visor.setText(numeroDigitado);
-            } else{
-                valor = valor.parseDouble(numeroDigitado);
+            Double total = 0.0;
+            if(primeiroNumero == 0.0){
+                primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
+                numeroDigitado = "";
+                visor.setText(primeiroNumero.toString());
             }
 
-            calculo = digitos - valor ;
+            segundoNumero = segundoNumero.parseDouble(numeroDigitado);
+            total = primeiroNumero - segundoNumero;
+            primeiroNumero = total;
+            visor.setText(total.toString());
 
-            visor.setText(calculo.toString());
-
-        } catch (ArithmeticException arithmeticException){
+        }catch (ArithmeticException arithmeticException){
             arithmeticException.printStackTrace();
 
-
-        } catch (Exception e){
+        }
+        catch (Exception e){
             e.printStackTrace();
+
         }
 
+       
      }
 
 
@@ -258,20 +261,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void funcaoMultiplicao(){
 
-        Double digitos = 1.0;
-        Double valor = calculo;
-        digitos = digitos.parseDouble(numeroDigitado);
+        segundoNumero = 1.0;
+        Double valor = primeiroNumero;
+        segundoNumero = segundoNumero.parseDouble(numeroDigitado);
 
         try {
-            if(calculo != 0.0){
-                calculo = calculo.parseDouble(numeroDigitado);
+            if(primeiroNumero != 0.0){
+                primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
                 visor.setText(numeroDigitado);
 
-                calculo = digitos * valor;
+                primeiroNumero = segundoNumero * valor;
 
-                visor.setText(calculo.toString());
+                visor.setText(primeiroNumero.toString());
             }else {
-                calculo = calculo.parseDouble(numeroDigitado);
+                primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
                 visor.setText(numeroDigitado);
             }
 
@@ -288,21 +291,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void funcaoDivisao(){
 
-        Double digitos = 0.0;
-        Double valor = calculo;
-        digitos = digitos.parseDouble(numeroDigitado);
+        segundoNumero = 0.0;
+        Double valor = primeiroNumero;
+        segundoNumero = segundoNumero.parseDouble(numeroDigitado);
 
         try {
 
-            if(calculo != 0.0){
-                calculo = calculo.parseDouble(numeroDigitado);
+            if(primeiroNumero != 0.0){
+                primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
                 visor.setText(numeroDigitado);
 
-                calculo = valor / digitos;
+                primeiroNumero = valor / segundoNumero;
 
-                visor.setText(calculo.toString());
+                visor.setText(primeiroNumero.toString());
             }else {
-                calculo = calculo.parseDouble(numeroDigitado);
+                primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
                 visor.setText(numeroDigitado);
             }
 
@@ -333,11 +336,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case "*":
+                segundoNumero = primeiroNumero;
                 funcaoMultiplicao();
                 operacao = "*";
+
+
                 break;
 
             case "/":
+                funcaoDivisao();
                 operacao = "/";
                 break;
 
@@ -346,16 +353,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void memoria(){
-
-        if (memoria.equals("") ){
-            memoria = visor.getText().toString();
-        } else{
-            visor.setText(memoria);
-            calculo = Double.valueOf(memoria);
+    public void porcentagem(){
 
 
-        }
 
 
     }

@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Double primeiroNumero = 0.0;
     private String numeroDigitado = "";
     private String operacao="";
-    private String memoria = "";
     private Double segundoNumero = 0.0;
     private Double memoriacalculo = 0.0;
 
@@ -196,7 +195,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
 
                     case R.id.buttonPorcentagem:
-                       // porcentagem();
+                        porcentagem(operacao);
+                        numeroDigitado = "";
 
 
                 }
@@ -253,76 +253,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-       
      }
-
-
-
 
     public void funcaoMultiplicao(){
 
-        segundoNumero = 1.0;
-        Double valor = primeiroNumero;
-        segundoNumero = segundoNumero.parseDouble(numeroDigitado);
-
         try {
-            if(primeiroNumero != 0.0){
+            Double total = 0.0;
+            if(primeiroNumero == 0.0){
                 primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
-                visor.setText(numeroDigitado);
-
-                primeiroNumero = segundoNumero * valor;
-
+                numeroDigitado = "";
                 visor.setText(primeiroNumero.toString());
-            }else {
-                primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
-                visor.setText(numeroDigitado);
             }
 
-        }     catch (ArithmeticException arithmeticException){
+            segundoNumero = segundoNumero.parseDouble(numeroDigitado);
+            total = primeiroNumero * segundoNumero;
+            primeiroNumero = total;
+            visor.setText(total.toString());
+
+        }catch (ArithmeticException arithmeticException){
             arithmeticException.printStackTrace();
 
-            }
+        }
         catch (Exception e){
-                e.printStackTrace();
+            e.printStackTrace();
 
-            }
+        }
 
      }
 
     public void funcaoDivisao(){
 
-        segundoNumero = 0.0;
-        Double valor = primeiroNumero;
-        segundoNumero = segundoNumero.parseDouble(numeroDigitado);
-
         try {
-
-            if(primeiroNumero != 0.0){
+            Double total = 0.0;
+            if(primeiroNumero == 0.0){
                 primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
-                visor.setText(numeroDigitado);
-
-                primeiroNumero = valor / segundoNumero;
-
+                numeroDigitado = "";
                 visor.setText(primeiroNumero.toString());
-            }else {
-                primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
-                visor.setText(numeroDigitado);
             }
 
-        } catch (ArithmeticException arithmeticException){
+            segundoNumero = segundoNumero.parseDouble(numeroDigitado);
+            total = primeiroNumero / segundoNumero;
+            primeiroNumero = total;
+            visor.setText(total.toString());
+
+        }catch (ArithmeticException arithmeticException){
             arithmeticException.printStackTrace();
 
-        } catch (Exception e){
-
+        }
+        catch (Exception e){
             e.printStackTrace();
+
         }
 
-
-
     }
-     // verificar como a funcao esta mandando o digito para o visor e verificar como as variaveis estao sendo atualizadas apos isso.
-    //  possivel falha quando atualiza a ultima variavel
-    public void funcaoIgual(String funcaoAnterior) {
+
+    public void funcaoIgual(String operacao) {
 
 
         switch (operacao){
@@ -353,10 +338,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void porcentagem(){
+    public void porcentagem(String operacao){
+        Double porcentagem = 0.0;
+        try {
+            Double total = 0.0;
+            if(primeiroNumero == 0.0){
+                primeiroNumero = primeiroNumero.parseDouble(numeroDigitado);
+                numeroDigitado = "";
+                visor.setText(primeiroNumero.toString());
+            } else{
 
 
+            switch (operacao){
+                case "+":
 
+                    segundoNumero = segundoNumero.parseDouble(numeroDigitado);
+                    porcentagem = segundoNumero/100;
+                    total = primeiroNumero + (porcentagem * primeiroNumero);
+                    primeiroNumero = total;
+                    visor.setText(total.toString());
+
+                    operacao = "";
+                    break;
+                case "-" :
+
+                    segundoNumero = segundoNumero.parseDouble(numeroDigitado);
+                    porcentagem = segundoNumero/100;
+                    total = primeiroNumero - (porcentagem * primeiroNumero);
+                    primeiroNumero = total;
+                    visor.setText(total.toString());
+                    operacao = "-";
+                    break;
+
+                case "*":
+                    segundoNumero = segundoNumero.parseDouble(numeroDigitado);
+                    total = primeiroNumero * (segundoNumero/100);
+                    primeiroNumero = total;
+                    visor.setText(total.toString());
+                    operacao = "*";
+
+
+                    break;
+
+                case "/":
+                    segundoNumero = segundoNumero.parseDouble(numeroDigitado);
+                    total = primeiroNumero / (segundoNumero/100);
+                    primeiroNumero = total;
+                    visor.setText(total.toString());
+                    operacao = "/";
+                    break;
+
+            }
+                }
+
+        }catch (ArithmeticException arithmeticException){
+            arithmeticException.printStackTrace();
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
+        }
 
     }
 
